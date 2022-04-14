@@ -11,29 +11,30 @@
 # 2021 OCT 14 - Initial release
 # 2022 JAN 04 - Remove dependency on PIL module.  Improve compatibility with pbm files.
 
-_SET_CONTRAST = 0x81
-_SET_ENTIRE_ON = 0xA4
-_SET_NORM_INV = 0xA6
-_SET_DISP = 0xAE
-_SET_MEM_ADDR = 0x20
-_SET_COL_ADDR = 0x21
-_SET_PAGE_ADDR = 0x22
-_SET_DISP_START_LINE = 0x40
-_SET_SEG_REMAP = 0xA0
-_SET_MUX_RATIO = 0xA8
-_SET_IREF_SELECT = 0xAD
-_SET_COM_OUT_DIR = 0xC0
-_SET_DISP_OFFSET = 0xD3
-_SET_COM_PIN_CFG = 0xDA
-_SET_DISP_CLK_DIV = 0xD5
-_SET_PRECHARGE = 0xD9
-_SET_VCOM_DESEL = 0xDB
-_SET_CHARGE_PUMP = 0x8D
-WIDTH = 128
-HEIGHT = 64
-
 from PiicoDev_Unified import *
 from math import cos,sin,radians
+from micropython import const
+
+_SET_CONTRAST = const(0x81)
+_SET_ENTIRE_ON = const(0xA4)
+_SET_NORM_INV = const(0xA6)
+_SET_DISP = const(0xAE)
+_SET_MEM_ADDR = const(0x20)
+_SET_COL_ADDR = const(0x21)
+_SET_PAGE_ADDR = const(0x22)
+_SET_DISP_START_LINE = const(0x40)
+_SET_SEG_REMAP = const(0xA0)
+_SET_MUX_RATIO = const(0xA8)
+_SET_IREF_SELECT = const(0xAD)
+_SET_COM_OUT_DIR = const(0xC0)
+_SET_DISP_OFFSET = const(0xD3)
+_SET_COM_PIN_CFG = const(0xDA)
+_SET_DISP_CLK_DIV = const(0xD5)
+_SET_PRECHARGE = const(0xD9)
+_SET_VCOM_DESEL = const(0xDB)
+_SET_CHARGE_PUMP = const(0x8D)
+WIDTH = const(128)
+HEIGHT = const(64)
 
 compat_str = '\nUnified PiicoDev library out of date.  Get the latest module: https://piico.dev/unified \n'
 

@@ -2,51 +2,23 @@ from sys import exit
 from usys import print_exception
 from micropython import const
 from machine import SPI, Pin
-import sdcard 
 import os
 import os_path
+import mpy_utils
 
 _FILE = const(0x8000)
 _DIR = const(0x4000)
 
-def format_human(vals):
-    results = []
-    units = ["", "k", "M", "G", "T"]
-    for val in vals:
-        temp = val
-        divisor = 0
-        while temp >= 2000:
-            divisor += 1
-            temp = temp // 1000    
-        results.append(str(temp) + units[divisor])
-    return results
-
-class Volume():
-    def __init__(self):
-        spi = SPI(1,sck=Pin(14), mosi=Pin(15), miso=Pin(12))
-        cs = Pin(13)
-        self._sd = sdcard.SDCard(spi, cs, baudrate=21_000_000)
-        self._mount_point = '/sd'
-
-    def mount(self, mount_point='/sd'):
-        self._mount_point = mount_point
-        os.mount(self._sd, self._mount_point, readonly=False)
-        print("SD card mounted on " + self._mount_point)
-
-    def umount(self):
-        os.umount(self._mount_point)
-        print("SD card unmounted")
-
-
 class Mosh():
     def __init__(self):
-        self._sd = Volume()
-        self._mount_point = "/sd"
-        self._sd.mount(self._mount_point)
+        self._sd = mpy_utils.SDVolume()
+        self._sd.mount("/sd")
+        print("SD card mounted on /sd")
         self._go()
 
     def _exit(self, args):
         self._sd.umount()
+        print("SD card unmounted")
         exit()
         
     def cat(self, args):
@@ -184,7 +156,7 @@ class Mosh():
             fs_size = info[0]*info[2]
             fs_free = info[0]*info[3]
             fs_used = fs_size - fs_free
-            human_vals = format_human((fs_size, fs_used, fs_free))
+            human_vals = mpy_utils.format_human((fs_size, fs_used, fs_free))
             print("File system: {0}\n  Size: {1:,} ({2:s}), Used: {3:,} ({4:s}), Free: {5:,} ({6:s})".format( \
                     fs_path, fs_size, human_vals[0], fs_used, human_vals[1], fs_free, human_vals[2]))
         except OSError:
@@ -231,5 +203,5 @@ class Mosh():
         except KeyboardInterrupt:
             self._exit(None)
         except Exception as err:
-            self._exit(None)
             print("Caught exception ", repr(err), str(err))
+            self._exit(None)

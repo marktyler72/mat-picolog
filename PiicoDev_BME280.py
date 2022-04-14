@@ -82,7 +82,7 @@ class PiicoDev_BME280:
             chip_ID = self._read8(_REG_CHIPID)
             if chip_ID != _BME_CHIPID:
                 print("Chip_ID is 0x{0:2X}, expected 0x{1:2X}".format(chip_ID, _REG_CHIPID))
-                raise Exception("BME280 id wrong!")
+                raise RuntimeError("BME280 id wrong!")
         except Exception as e:
             print(i2c_err_str.format(self.addr))
             raise e
